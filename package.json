@@ -6,7 +6,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "start": "concurrently \"npm run serve\" \"node server.js\""
+    "start": "concurrently \"npm run serve\" \"node server.js\"",
+    "deploy": "npm run build && gh-pages -d dist",
+    "predeploy": "rm -rf dist"
   },
   "dependencies": {
     "core-js": "^3.8.3",
@@ -22,7 +24,8 @@
     "@vue/cli-service": "~5.0.0",
     "concurrently": "^8.2.2",
     "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^8.0.3"
+    "eslint-plugin-vue": "^8.0.3",
+    "gh-pages": "^6.1.1"
   },
   "eslintConfig": {
     "root": true,
