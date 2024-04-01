@@ -1,0 +1,15 @@
+{
+    "name": "Strawgoh | After School",
+    "short_name": "Strawgoh AS",
+    "description": "After School",
+    "icons": [
+        {
+            "src": "applogo.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "index.html",
+    "display": "fullscreen",
+    "background_color": "rgb(42, 70, 121)"
+}
