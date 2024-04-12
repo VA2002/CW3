@@ -1,5 +1,7 @@
+//Name of cache
 const cacheName = "strawgoh-cw3";
 
+//Files cached
 const cacheFiles = [
   "index.html", 
   "thelogo.png", 
@@ -7,12 +9,9 @@ const cacheFiles = [
   "main.js",
   "strawgoh.webmanifest",
   "../server.js", // Specify the correct path to server.js
-  // "../src/App.vue",
-  // "../src/components/Cart.vue",
-  // "../src/components/Checkout.vue",
-  // "../src/components/Lesson.vue",
 ];
 
+//Install files
 self.addEventListener("install", e => {
   console.log("Service Worker installed");
 
@@ -24,6 +23,7 @@ self.addEventListener("install", e => {
   );
 });
 
+//Activiate cached files
 self.addEventListener("activate", e => {
   console.log("Service Worker activated");
   e.waitUntil(
@@ -38,6 +38,7 @@ self.addEventListener("activate", e => {
   );
 });
 
+//Fetch files when offline
 self.addEventListener('fetch', e => {
     console.log('Service Worker fetching');
     e.respondWith(
