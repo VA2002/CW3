@@ -1,5 +1,7 @@
 <template>
+  <!-- App will be mounted here -->
   <div id="app">
+  <!-- Lesson component, the landing page -->    
     <Lesson
       v-if="currentComponent === 'Lesson'"
       @change-component="handleChangeComponent"
@@ -9,6 +11,7 @@
       @perform-search="performSearch"
       :lessons="filteredLessons"
     />
+    <!-- Cart component -->    
     <Cart
       v-if="currentComponent === 'Cart'"
       @change-component="handleChangeComponent"
@@ -18,6 +21,7 @@
       :cart="cart"
       :totalAmt="totalAmt"
     />
+    <!-- Checkout component -->    
     <Checkout
       v-if="currentComponent === 'Checkout'"
       @change-component="handleChangeComponent"
@@ -29,10 +33,12 @@
 </template>
 
 <script>
+//Importing components
 import Lesson from "./components/Lesson.vue";
 import Cart from "./components/Cart.vue";
 import Checkout from "./components/Checkout.vue";
 
+//Vue instance
 export default {
   name: "App",
   components: {
@@ -43,15 +49,15 @@ export default {
   data() {
     return {
       currentComponent: "Lesson",
-      lessons: [], // Assuming you have lessons data
-      cart: [], // Array to hold cart items
+      lessons: [], //Storing lessons
+      cart: [], //Storing cart items
       searchTerm: "",
-      totalAmt: 0 // Initialize totalAmt
+      totalAmt: 0 //Initialize totalAmt
     };
   },
   computed: {
     filteredLessons() {
-      // Filter lessons based on the search term
+      //Filter lessons based on the search term
       return this.lessons.filter(lesson =>
         lesson.name.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
@@ -65,22 +71,22 @@ export default {
       this.currentComponent = component;
     },
     addToCartHandler(lesson) {
-      // Find the index of the lesson in the cart array
+      //Finding the index of the lesson in the cart array
       const index = this.cart.findIndex(item => item._id === lesson._id);
 
       if (index === -1) {
-        // Lesson not found in cart, add it with cartqty set to 1
+        //Lesson not found in cart, add it with cartqty set to 1
         this.cart.push({
           ...lesson,
           cartqty: 1
         });
         alert(`Added ${lesson.name} to cart`);
       } else {
-        // Lesson found in cart, increment its cartqty
+        //Lesson found in cart, increment its cartqty
         this.cart[index].cartqty++;
       }
 
-      // Recalculate totalAmt
+      //Recalculate totalAmt
       this.calculateTotalAmt();
     },
 
@@ -90,15 +96,15 @@ export default {
         item => item._id === cartItemToDelete._id
       );
       if (indexToDelete !== -1) {
-        // Remove the item from the cart array
+        //Remove the item from the cart array
         this.cart.splice(indexToDelete, 1);
-        // Recalculate totalAmt
+        //Recalculate totalAmt
         this.calculateTotalAmt();
-        // Optionally, perform any other actions related to item deletion
+        //Optionally, perform any other actions related to item deletion
       }
     },
     isCartEmpty() {
-      // Check if the cart is empty
+      //Check if the cart is empty
       return this.cart.length === 0;
     },
     performSearch() {
@@ -134,12 +140,12 @@ export default {
           })
           .catch(error => {
             console.error("ERROR:", error);
-            // Handle error (e.g., show an error message to the user)
+            //Handle error 
           });
       }
     },
     handleFormSubmission(submission) {
-      // Make a POST request to submit the form data
+      //Make a POST request to submit the form data
       fetch("http://localhost:3000/order", {
         method: "POST",
         headers: {
@@ -155,16 +161,16 @@ export default {
           return response.json();
         })
         .then(data => {
-          // Handle success response
+          //Handle success response
           alert("Submitted");
           console.log("Order placed successfully:", data);
           this.cart.forEach(item => {
             this.updateLessonSpace(item._id, item.cartqty);
           });
-          // Optionally, perform any other action
+          //Optionally, perform any other action
         })
         .catch(error => {
-          // Handle error
+          //Handle error
           console.error("Error placing order:", error);
         });
     },
@@ -201,43 +207,6 @@ export default {
           console.error("ERROR:", error);
         });
     },
-    // handleFormSubmission(submission) {
-    //   // Handle form submission here (e.g., send data to backend)
-    //   console.log("Form submitted with data:", submission);
-    //   // Assuming you want to reset the form and go back to the cart after submission
-    //   fetch("http://localhost:3000/order", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify(this.submission)
-    //   }) //Error handling
-    //     .then(response => {
-    //       if (!response.ok) {
-    //         throw new Error(`HTTP ERROR! Status ${response.status}`);
-    //       }
-    //       return response.json();
-    //     })
-    //     .then(data => {
-    //       console.log("Order submitted successfully: ", data);
-
-    //       //Update lesson space after order submission
-    //       this.cart.forEach(item => {
-    //         this.updateLessonSpace(item._id, item.cartqty);
-    //       });
-
-    //       // Clear the cart after a successful order
-    //       this.cart = [];
-    //       alert("Submitted");
-    //       this.orders.push(this.submission);
-    //     })
-    //     //Exception handling
-    //     .catch(error => {
-    //       console.log("ERROR: ", error.message);
-    //       // Handle the error appropriately
-    //     });
-    //   this.currentComponent = "Lesson";
-    // },
     calculateTotalAmt() {
       this.totalAmt = this.cart.reduce(
         (total, cartItem) => total + cartItem.price * cartItem.cartqty,
@@ -252,6 +221,7 @@ export default {
 </script>
 
 <style>
+/*Styling*/
 .Navigation {
   background-color: rgb(42, 70, 121);
   width: 101.5%;
