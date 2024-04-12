@@ -1,4 +1,5 @@
 <template>
+  <!--Lesson page-->
   <div id="Homepage">
     <div class="Navigation">
       <!--Cart button with a disabled condition if the cart is empty-->
@@ -62,12 +63,14 @@
       </center>
     </div>
     <br>
+    <!--Search bar-->
     <input
       type="text"
       id="Search"
       placeholder="Search Subject Name, Code, Location or Teacher Here..."
       v-model="searchTerm"
     >
+    <!--Div for viewing lessons-->
     <div class="Theclasses">
       <table id="Classtable" cellspacing="15">
         <tr v-for="(row, rowIndex) in lessonRows" :key="rowIndex">
@@ -111,8 +114,11 @@
 </template>
 
 <script>
+//Vue instance
 export default {
+  //Naming component
   name: "Lesson-Component",
+  //Calling props from parent
   props: {
     cart: {
       type: Array,
@@ -127,10 +133,10 @@ export default {
   },
   methods: {
     handleCartButtonClick() {
-      // Emit an event to App.vue to switch to Cart.vue component
+      //Emit an event to App.vue to switch to Cart.vue component
       this.$emit("change-component", "Cart");
     },
-    // Your sorting methods here
+    //Sorting methods
     nameAsc() {
       this.lessons.sort((a, b) => a.name.localeCompare(b.name));
     },
@@ -161,10 +167,10 @@ export default {
     spaceDesc() {
       this.lessons.sort((a, b) => b.space - a.space);
     },
-    // Your search method here
+    //Your search method here
     matchSearch(lesson) {
       const searchTerm = this.searchTerm.toLowerCase();
-      // Check if any field matches the search term
+      //Check if any field matches the search term
       return (
         lesson.name.toLowerCase().includes(searchTerm) ||
         lesson.code.toLowerCase().includes(searchTerm) ||
@@ -173,29 +179,28 @@ export default {
       );
     },
     addToCart(lesson) {
-      // Emit a custom event "add-to-cart" with the lesson data
+      //Emit a custom event "add-to-cart" with the lesson data
       if (lesson && lesson.cartqty !== undefined && lesson.space > 0) {
         console.log(lesson);
-        // lesson.space--;
         this.$emit("add-to-cart", lesson);
       } else {
         console.error("Invalid lesson object:", lesson);
       }
     },
     calculateSpaceLeft(lesson) {
-      // Find the cart item corresponding to this lesson
+      //Find the cart item corresponding to this lesson
       const cartItem = this.cart.find(item => item._id === lesson._id);
       if (cartItem) {
-        // If the lesson is in the cart, subtract its cart quantity from its initial space
+        //If the lesson is in the cart, subtract its cart quantity from its initial space
         return lesson.space - cartItem.cartqty;
       } else {
-        // If the lesson is not in the cart, return its initial space
+        //If the lesson is not in the cart, return its initial space
         return lesson.space;
       }
     }
   },
   created() {
-    // Make an HTTP GET request to fetch the lessons data from the backend
+    //Make an HTTP GET request to fetch the lessons data from the backend
     fetch("http://localhost:3000/collection/Lessons")
       .then(response => {
         if (!response.ok) {
@@ -204,7 +209,7 @@ export default {
         return response.json();
       })
       .then(data => {
-        this.lessons = data; // Update the lessons data with the response data
+        this.lessons = data; //Update the lessons data with the response data
         console.log(data);
       })
       .catch(error => {
@@ -213,7 +218,7 @@ export default {
   },
   computed: {
     lessonRows() {
-      // Group lessons into arrays of three
+      //Group lessons into arrays of three
       const rows = [];
       for (let i = 0; i < this.lessons.length; i += 3) {
         rows.push(this.lessons.slice(i, i + 3));
@@ -225,5 +230,4 @@ export default {
 </script>
 
 <style>
-/* Your Lesson component styles here */
 </style>

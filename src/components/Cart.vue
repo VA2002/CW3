@@ -1,13 +1,16 @@
 <template>
   <div>
+    <!-- Cart page -->    
     <div id="Cartpage">
       <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <!--Back to lessons page-->
       <i
         @click="goBack"
         id="Back"
         class="fa-solid fa-arrow-left"
       ></i>
       <br>
+      <!-- Shows items in cart -->    
       <div class="Cartitems">
         <br>
         <center>
@@ -76,8 +79,11 @@
 </template>
 
 <script>
+//Vue instance
 export default {
+  //Component name
   name: "Cart-Component",
+  //Props called from parent component
   props: ["cart", "totalAmt"],
 
   methods: {
@@ -131,24 +137,24 @@ export default {
       );
     }
   },
+  //Check if cart is empty
   computed: {
     isCartEmpty() {
       return !this.cart || this.cart.length === 0;
     }
   },
   watch: {
-    // Watch for changes in the cart prop and update totalAmt accordingly
+    //Watch for changes in the cart prop and update totalAmt accordingly
     cart: {
       handler: function() {
-        // Emit event to notify parent about the change in totalAmt
+        //Emit event to notify parent about the change in totalAmt
         this.$emit("update-total", this.dynamicTotalAmt());
       },
-      deep: true // Watch for changes in nested properties of cart items
+      deep: true //Watch for changes in nested properties of cart items
     }
   }
 };
 </script>
 
 <style>
-/* Your styles here */
 </style>
